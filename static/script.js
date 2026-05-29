@@ -92,42 +92,31 @@ document.addEventListener('DOMContentLoaded', () => {
       const stageWrapper = document.createElement('div');
       stageWrapper.className = 'funnel-stage-wrapper';
       
-      // 1. Stage Block
       const range = data[stage.key];
-      const stageBlock = document.createElement('div');
-      stageBlock.className = 'funnel-stage';
-      stageBlock.style.setProperty('--stage-width', stage.width);
-      stageBlock.style.setProperty('--stage-color', stage.color);
       
-      stageBlock.innerHTML = `
-        <div class="stage-name">
-          <span style="font-size: 1.1rem;">${getStageIcon(stage.key)}</span>
-          <div>
-            <strong>${stage.name}</strong>
-            <div style="font-size: 0.65rem; color: rgba(255,255,255,0.7); font-weight: normal; margin-top: 2px;">${stage.sub}</div>
-          </div>
-        </div>
-        <div class="stage-value">${formatNum(range[0])} - ${formatNum(range[1])}</div>
-      `;
-      
-      stageWrapper.appendChild(stageBlock);
-
-      // 2. Conversion/CTR connector tags (draw between blocks except the last)
+      // Calculate dynamic conversion rate to place on the right under the value
+      let rateText = '';
       if (idx < stages.length - 1) {
         const nextStageKey = stages[idx + 1].key;
-        
-        // Calculate dynamic conversion rate
         const currentAvg = avg(data[stage.key]);
         const nextAvg = avg(data[nextStageKey]);
         const rate = currentAvg > 0 ? ((nextAvg / currentAvg) * 100).toFixed(1) : 0;
-        
-        const connector = document.createElement('div');
-        connector.className = 'funnel-connector';
-        connector.innerHTML = `
-          <span class="conversion-tag">${getConversionLabel(stage.key)}: ${rate}%</span>
-        `;
-        stageWrapper.appendChild(connector);
+        rateText = `<span class="seam-conversion-badge">${getConversionLabel(stage.key)}: ${rate}%</span>`;
       }
+      
+      stageWrapper.innerHTML = `
+        <div class="funnel-left-text">
+          <strong>${getStageIcon(stage.key)} ${stage.name}</strong>
+          <p>${stage.sub}</p>
+        </div>
+        <div class="funnel-center-bar" style="--stage-width: ${stage.width}; --stage-color: ${stage.color};" title="${stage.name}">
+          <!-- Smooth, text-free sloped trapezoid for a perfect continuous central funnel -->
+        </div>
+        <div class="funnel-right-value">
+          <div class="stage-value-range">${formatNum(range[0])} - ${formatNum(range[1])}</div>
+          ${rateText}
+        </div>
+      `;
       
       funnelBlocksContainer.appendChild(stageWrapper);
     });
