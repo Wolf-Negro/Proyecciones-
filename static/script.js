@@ -204,6 +204,25 @@ document.addEventListener('DOMContentLoaded', () => {
         // Render Funnel Visual representation
         renderFunnel(data);
 
+        // Populate bottom summary cards
+        const summaryInvestment = document.getElementById('summary-investment');
+        const summaryConversion = document.getElementById('summary-conversion');
+        const summarySales = document.getElementById('summary-sales');
+
+        if (data.investment) {
+          summaryInvestment.textContent = `S/. ${formatNum(data.investment[0])} – ${formatNum(data.investment[1])}`;
+        } else {
+          summaryInvestment.textContent = `S/. ${formatNum(payload.investment)}`;
+        }
+
+        // Total conversion: reach -> sales
+        const avgReach = avg(data.reach);
+        const avgSales = avg(data.sales);
+        const totalConversion = avgReach > 0 ? ((avgSales / avgReach) * 100).toFixed(1) : '0.0';
+        summaryConversion.textContent = `${totalConversion}%`;
+
+        summarySales.textContent = `${formatNum(data.sales[0])} – ${formatNum(data.sales[1])}`;
+
         // Transition views
         loaderWrapper.style.display = 'none';
         dashboardContent.style.display = 'flex';
