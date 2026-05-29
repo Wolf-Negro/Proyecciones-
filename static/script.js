@@ -74,77 +74,66 @@ document.addEventListener('DOMContentLoaded', () => {
   // Helper: Calculate average from min-max array
   const avg = (arr) => (arr[0] + arr[1]) / 2;
 
-  // 3. Dynamic Funnel Blocks Renderer
+  // 3. Dynamic Funnel Renderer — Full-width bars with text inside
   const renderFunnel = (data) => {
     funnelBlocksContainer.innerHTML = '';
     
-    // Funnel Steps metadata (stages, colors, labels, width scaling percentages)
     const stages = [
-      { key: 'reach', name: 'Alcance Mensual', color: '#2B096F', width: '100%', sub: 'Personas que ven tus anuncios' },
-      { key: 'clicks', name: 'Clics en Anuncios', color: '#4207AC', width: '92%', sub: 'Tránsito a campañas publicitarias' },
-      { key: 'visits', name: 'Visitas en Landing', color: '#5707D6', width: '84%', sub: 'Llegaron a tu página web' },
-      { key: 'leads', name: 'Contactos WhatsApp', color: '#6F44CB', width: '76%', sub: 'Abrieron chat o registraron datos' },
-      { key: 'interested', name: 'Prospectos Reales', color: '#8657DF', width: '68%', sub: 'Filtro calificado por Agente IA' },
-      { key: 'sales', name: 'Ventas Estimadas', color: '#9D6CF3', width: '60%', sub: 'Cierres de clientes logrados' }
+      { key: 'reach',      name: '1. Alcance Mensual',    color: '#2D2B5E', offset: '0px',   sub: 'Personas que ven tus anuncios',     icon: '📢' },
+      { key: 'clicks',     name: '2. Clics en Anuncios',  color: '#3D3A8C', offset: '55px',  sub: 'Interés inicial en campañas',        icon: '🖱️' },
+      { key: 'visits',     name: '3. Visitas en Landing', color: '#5C5AAD', offset: '110px', sub: 'Llegaron a tu página web',           icon: '🌐' },
+      { key: 'leads',      name: '4. Contactos WhatsApp', color: '#8B5BA6', offset: '165px', sub: 'Abrieron chat o registraron datos',  icon: '💬' },
+      { key: 'interested', name: '5. Prospectos Reales',  color: '#C06BA0', offset: '220px', sub: 'Filtro por Inteligencia Artificial', icon: '🎯' },
+      { key: 'sales',      name: '6. Ventas Estimadas',   color: '#E8729A', offset: '275px', sub: 'Cierres de clientes logrados',       icon: '💰' }
     ];
 
+    const conversionLabels = {
+      reach: 'CTR (Clics)',
+      clicks: 'Eficiencia de Carga',
+      visits: 'Conversión a Lead',
+      leads: 'Conversión IA',
+      interested: 'Ratio de Cierre'
+    };
+
     stages.forEach((stage, idx) => {
-      const stageWrapper = document.createElement('div');
-      stageWrapper.className = 'funnel-stage-wrapper';
-      
       const range = data[stage.key];
-      
-      // Calculate dynamic conversion rate to place on the right under the value
-      let rateText = '';
-      if (idx < stages.length - 1) {
-        const nextStageKey = stages[idx + 1].key;
-        const currentAvg = avg(data[stage.key]);
-        const nextAvg = avg(data[nextStageKey]);
-        const rate = currentAvg > 0 ? ((nextAvg / currentAvg) * 100).toFixed(1) : 0;
-        rateText = `<span class="seam-conversion-badge">${getConversionLabel(stage.key)}: ${rate}%</span>`;
-      }
-      
-      stageWrapper.innerHTML = `
-        <div class="funnel-left-text">
-          <strong>${getStageIcon(stage.key)} ${stage.name}</strong>
-          <p>${stage.sub}</p>
-        </div>
-        <div class="funnel-center-bar" style="--stage-width: ${stage.width}; --stage-color: ${stage.color};" title="${stage.name}">
-          <!-- Smooth, text-free sloped trapezoid for a perfect continuous central funnel -->
-        </div>
-        <div class="funnel-right-value">
-          <div class="stage-value-range">${formatNum(range[0])} - ${formatNum(range[1])}</div>
-          ${rateText}
+
+      // Barra
+      const row = document.createElement('div');
+      row.className = 'funnel-row';
+      row.innerHTML = `
+        <div class="funnel-bar" style="--bar-offset: ${stage.offset}; --bar-color: ${stage.color};">
+          <span class="funnel-bar-icon">${stage.icon}</span>
+          <div class="funnel-bar-text">
+            <strong>${stage.name}</strong>
+            <p>${stage.sub}</p>
+          </div>
+          <div class="funnel-value">${formatNum(range[0])} – ${formatNum(range[1])}</div>
         </div>
       `;
-      
-      funnelBlocksContainer.appendChild(stageWrapper);
+      funnelBlocksContainer.appendChild(row);
+
+      // Badge flotante entre barras — solapa la barra de arriba y la de abajo
+      if (idx < stages.length - 1) {
+        const nextKey = stages[idx + 1].key;
+        const curAvg  = avg(data[stage.key]);
+        const nextAvg = avg(data[nextKey]);
+        const rate = curAvg > 0 ? ((nextAvg / curAvg) * 100).toFixed(1) : '0.0';
+
+        const connector = document.createElement('div');
+        connector.className = 'funnel-badge-connector';
+        connector.innerHTML = `
+          <div class="funnel-badge-circle">
+            <svg width="7" height="8" viewBox="0 0 10 12" fill="none">
+              <line x1="5" y1="1" x2="5" y2="8" stroke="#5707D6" stroke-width="2" stroke-linecap="round"/>
+              <path d="M1.5 6.5L5 10.5L8.5 6.5" stroke="#5707D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            </svg>
+          </div>
+          <span class="funnel-badge-pill">${conversionLabels[stage.key]}: ${rate}%</span>
+        `;
+        funnelBlocksContainer.appendChild(connector);
+      }
     });
-  };
-
-  // Helper icons for the funnel stages
-  const getStageIcon = (key) => {
-    switch (key) {
-      case 'reach': return '📢';
-      case 'clicks': return '🖱️';
-      case 'visits': return '🌐';
-      case 'leads': return '💬';
-      case 'interested': return '🎯';
-      case 'sales': return '💰';
-      default: return '⚡';
-    }
-  };
-
-  // Helper labels for conversion rates
-  const getConversionLabel = (key) => {
-    switch (key) {
-      case 'reach': return 'CTR (Clics)';
-      case 'clicks': return 'Eficiencia de Carga';
-      case 'visits': return 'Conversión a Lead';
-      case 'leads': return 'Calificación IA';
-      case 'interested': return 'Ratio de Cierre';
-      default: return 'Conversión';
-    }
   };
 
   // 4. Submit & AJAX form processor
@@ -156,7 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
     dashboardContent.style.display = 'none';
     loaderWrapper.style.display = 'flex';
     
-    // Prepare payload from selected elements
+    // Prepare payload
     const formData = new FormData(form);
     const payload = {};
     formData.forEach((value, key) => {
@@ -175,52 +164,36 @@ document.addEventListener('DOMContentLoaded', () => {
       if (json.success) {
         const data = json.data;
         
-        // Update header badge
-        if (payload.mode === 'investment') {
-          modeBadge.textContent = 'Proyección por Inversión';
-          modeBadge.style.borderColor = 'var(--primary-color)';
-          modeBadge.style.color = 'var(--primary-color)';
-          modeBadge.style.background = 'rgba(6, 182, 212, 0.1)';
-        } else {
-          modeBadge.textContent = 'Embudo Inverso por Meta de Ventas';
-          modeBadge.style.borderColor = 'var(--secondary-color)';
-          modeBadge.style.color = 'var(--secondary-color)';
-          modeBadge.style.background = 'rgba(217, 70, 239, 0.1)';
-        }
-
-        // Fill in KPI Metrics Grid
+        // Fill hidden KPI fields (backward compat)
         if (data.investment) {
           kpiInvestment.textContent = `S/. ${formatNum(data.investment[0])} - ${formatNum(data.investment[1])}`;
         } else {
           kpiInvestment.textContent = `S/. ${formatNum(payload.investment)}`;
         }
-        
         kpiReach.textContent = `${formatNum(data.reach[0])} - ${formatNum(data.reach[1])}`;
         kpiClicks.textContent = `${formatNum(data.clicks[0])} - ${formatNum(data.clicks[1])}`;
         kpiVisits.textContent = `${formatNum(data.visits[0])} - ${formatNum(data.visits[1])}`;
         kpiLeads.textContent = `${formatNum(data.leads[0])} - ${formatNum(data.leads[1])}`;
         kpiSales.textContent = `${formatNum(data.sales[0])} - ${formatNum(data.sales[1])}`;
 
-        // Render Funnel Visual representation
+        // Render Funnel
         renderFunnel(data);
 
-        // Populate bottom summary cards
+        // Populate sidebar summary
         const summaryInvestment = document.getElementById('summary-investment');
         const summaryConversion = document.getElementById('summary-conversion');
         const summarySales = document.getElementById('summary-sales');
 
         if (data.investment) {
-          summaryInvestment.textContent = `S/. ${formatNum(data.investment[0])} – ${formatNum(data.investment[1])}`;
+          summaryInvestment.textContent = `S/ ${formatNum(data.investment[0])} – ${formatNum(data.investment[1])}`;
         } else {
-          summaryInvestment.textContent = `S/. ${formatNum(payload.investment)}`;
+          summaryInvestment.textContent = `S/ ${formatNum(payload.investment)}`;
         }
 
-        // Total conversion: reach -> sales
-        const avgReach = avg(data.reach);
+        const avgInterested = avg(data.interested);
         const avgSales = avg(data.sales);
-        const totalConversion = avgReach > 0 ? ((avgSales / avgReach) * 100).toFixed(1) : '0.0';
+        const totalConversion = avgInterested > 0 ? ((avgSales / avgInterested) * 100).toFixed(1) : '0.0';
         summaryConversion.textContent = `${totalConversion}%`;
-
         summarySales.textContent = `${formatNum(data.sales[0])} – ${formatNum(data.sales[1])}`;
 
         // Transition views
@@ -238,4 +211,141 @@ document.addEventListener('DOMContentLoaded', () => {
       emptyState.style.display = 'flex';
     }
   });
+
+  // 5. "¿Qué es esto?" Modal Logic
+  const modalOverlay = document.getElementById('modal-what-is');
+  const btnWhatIs = document.getElementById('btn-what-is');
+  const btnModalClose = document.getElementById('modal-close-what');
+
+  if (btnWhatIs && modalOverlay) {
+    btnWhatIs.addEventListener('click', () => {
+      modalOverlay.style.display = 'flex';
+    });
+
+    btnModalClose.addEventListener('click', () => {
+      modalOverlay.style.display = 'none';
+    });
+
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.style.display = 'none';
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalOverlay.style.display === 'flex') {
+        modalOverlay.style.display = 'none';
+      }
+    });
+  }
+
+  // 6. Toast helper
+  function showToast(msg) {
+    const t = document.createElement('div');
+    t.className = 'export-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    requestAnimationFrame(() => t.classList.add('show'));
+    setTimeout(() => {
+      t.classList.remove('show');
+      setTimeout(() => t.remove(), 320);
+    }, 3200);
+  }
+
+  // 7. "Exportar proyección" — PDF via html2canvas + jsPDF
+  const btnExport = document.getElementById('btn-export');
+  if (btnExport) {
+    btnExport.addEventListener('click', async () => {
+
+      // Validar que haya proyección generada
+      if (dashboardContent.style.display !== 'flex') {
+        showToast('⚠️ Primero genera tu proyección para poder exportarla.');
+        return;
+      }
+
+      // Estado del botón mientras exporta
+      const original = btnExport.innerHTML;
+      btnExport.innerHTML = '⏳ Generando PDF...';
+      btnExport.disabled = true;
+
+      try {
+        if (typeof html2canvas === 'undefined') {
+          throw new Error('html2canvas no disponible. Recarga la página (Ctrl+Shift+R).');
+        }
+        if (typeof window.jspdf === 'undefined') {
+          throw new Error('jsPDF no disponible. Recarga la página (Ctrl+Shift+R).');
+        }
+
+        const element = document.getElementById('dashboard-content');
+        const canvas = await html2canvas(element, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: '#ffffff',
+          logging: false,
+          onclone: (doc) => {
+            // Eliminar propiedades que html2canvas no soporta
+            const fix = doc.createElement('style');
+            fix.textContent = `
+              * { transition: none !important; animation: none !important; }
+              .glass-panel, .results-dashboard, .summary-sidebar {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+              }
+              .funnel-bar { clip-path: none !important; border-radius: 8px !important; }
+            `;
+            doc.head.appendChild(fix);
+
+            // html2canvas no procesa CSS filter — invertir la imagen manualmente con canvas
+            try {
+              const originalIcon = document.querySelector('.results-title-icon');
+              if (originalIcon && originalIcon.complete && originalIcon.naturalWidth > 0) {
+                const cvs = document.createElement('canvas');
+                cvs.width  = originalIcon.naturalWidth;
+                cvs.height = originalIcon.naturalHeight;
+                const ctx = cvs.getContext('2d');
+                ctx.filter = 'brightness(0) invert(1)';
+                ctx.drawImage(originalIcon, 0, 0);
+                const whiteDataUrl = cvs.toDataURL('image/png');
+                const clonedIcon = doc.querySelector('.results-title-icon');
+                if (clonedIcon) {
+                  clonedIcon.src = whiteDataUrl;
+                  clonedIcon.style.filter = 'none';
+                  clonedIcon.style.webkitFilter = 'none';
+                }
+              }
+            } catch(e) {}
+          }
+        });
+
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+
+        // Márgenes blancos para aspecto profesional
+        const margin = 14; // mm en cada lado
+        const mmW = (canvas.width  / 2) * 0.264583;
+        const mmH = (canvas.height / 2) * 0.264583;
+        const pageW = mmW + margin * 2;
+        const pageH = mmH + margin * 2;
+
+        const pdf = new jsPDF({ orientation: pageW > pageH ? 'l' : 'p', unit: 'mm', format: [pageW, pageH] });
+
+        // Fondo blanco explícito
+        pdf.setFillColor(255, 255, 255);
+        pdf.rect(0, 0, pageW, pageH, 'F');
+
+        // Contenido centrado con margen
+        pdf.addImage(imgData, 'PNG', margin, margin, mmW, mmH);
+        pdf.save('proyeccion-alucinando.pdf');
+
+      } catch (err) {
+        console.error('Export error:', err);
+        showToast('❌ ' + (err.message || 'No se pudo generar el PDF. Intenta de nuevo.'));
+      } finally {
+        btnExport.innerHTML = original;
+        btnExport.disabled = false;
+      }
+    });
+  }
 });
+
