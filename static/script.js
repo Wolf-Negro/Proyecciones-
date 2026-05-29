@@ -80,12 +80,12 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Funnel Steps metadata (stages, colors, labels, width scaling percentages)
     const stages = [
-      { key: 'reach', name: 'Alcance Mensual', color: '#06b6d4', width: '100%', sub: 'Personas que ven tus anuncios' },
-      { key: 'clicks', name: 'Clics en Anuncios', color: '#8b5cf6', width: '92%', sub: 'Interés inicial en campañas' },
-      { key: 'visits', name: 'Visitas en Landing', color: '#10b981', width: '84%', sub: 'Llegaron a tu página web' },
-      { key: 'leads', name: 'Contactos WhatsApp', color: '#f59e0b', width: '76%', sub: 'Abrieron chat o registraron datos' },
-      { key: 'interested', name: 'Prospectos Reales', color: '#ec4899', width: '68%', sub: 'Filtro por Inteligencia Artificial' },
-      { key: 'sales', name: 'Ventas Estimadas', color: '#ef4444', width: '60%', sub: 'Cierres de clientes logrados' }
+      { key: 'reach', name: 'Alcance Mensual', color: '#2B096F', width: '100%', sub: 'Personas que ven tus anuncios' },
+      { key: 'clicks', name: 'Clics en Anuncios', color: '#4207AC', width: '92%', sub: 'Tránsito a campañas publicitarias' },
+      { key: 'visits', name: 'Visitas en Landing', color: '#5707D6', width: '84%', sub: 'Llegaron a tu página web' },
+      { key: 'leads', name: 'Contactos WhatsApp', color: '#6F44CB', width: '76%', sub: 'Abrieron chat o registraron datos' },
+      { key: 'interested', name: 'Prospectos Reales', color: '#8657DF', width: '68%', sub: 'Filtro calificado por Agente IA' },
+      { key: 'sales', name: 'Ventas Estimadas', color: '#9D6CF3', width: '60%', sub: 'Cierres de clientes logrados' }
     ];
 
     stages.forEach((stage, idx) => {

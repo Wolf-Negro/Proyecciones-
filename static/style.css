@@ -3,30 +3,33 @@
 
 :root {
   --font-primary: 'Outfit', sans-serif;
-  --bg-gradient: radial-gradient(circle at 50% 50%, #0f172a 0%, #020617 100%);
-  --panel-bg: rgba(30, 41, 59, 0.4);
-  --border-color: rgba(255, 255, 255, 0.08);
-  --primary-color: #06b6d4; /* Neon Cyan */
-  --secondary-color: #d946ef; /* Neon Magenta */
-  --accent-color: #8b5cf6; /* Violet */
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  --glow-pink: 0 0 20px rgba(217, 70, 239, 0.3);
-  --glow-cyan: 0 0 20px rgba(6, 182, 212, 0.3);
-  --gradient-main: linear-gradient(135deg, #06b6d4 0%, #d946ef 50%, #8b5cf6 100%);
+  
+  /* Brand New Colors (Light Theme) */
+  --bg-color: #E9E8E6;            /* Smooth White */
+  --text-main: #141414;           /* Wash Black */
+  --text-muted: rgba(20, 20, 20, 0.6);
+  
+  --primary-color: #5707D6;       /* Violet Light */
+  --secondary-color: #A88DF8;     /* Light Lavender */
+  --accent-color: #2B096F;        /* Violet Dim */
+  
+  /* UI/UX elements */
+  --panel-bg: rgba(255, 255, 255, 0.85); /* Glass surface on light background */
+  --border-color: rgba(20, 20, 20, 0.08); /* Crisp divider */
+  --gradient-main: linear-gradient(135deg, #2B096F 0%, #5707D6 50%, #A88DF8 100%);
+  --glow-purple: 0 8px 30px rgba(87, 7, 214, 0.08);
 }
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
   font-family: var(--font-primary);
-  background: #020617;
-  background-image: var(--bg-gradient);
+  background: var(--bg-color);
   color: var(--text-main);
   min-height: 100vh;
   display: flex;
@@ -48,23 +51,26 @@ body {
 header {
   text-align: center;
   margin-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 header h1 {
-  font-size: 2.8rem;
+  font-size: 2.6rem;
   font-weight: 800;
   letter-spacing: -1px;
   background: var(--gradient-main);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
-  filter: drop-shadow(0 2px 8px rgba(6, 182, 212, 0.15));
+  filter: drop-shadow(0 2px 8px rgba(87, 7, 214, 0.1));
 }
 
 header p {
   color: var(--text-muted);
-  font-size: 1.1rem;
-  font-weight: 400;
+  font-size: 1.05rem;
+  font-weight: 500;
 }
 
 /* Split Main Panel (Quiz Left, Dashboard Right on large screens) */
@@ -81,29 +87,29 @@ header p {
   }
 }
 
-/* Glassmorphic Panel Base */
+/* Glassmorphic Panel Base (Light Theme High Contrast) */
 .glass-panel {
   background: var(--panel-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-color);
+  border: 1px solid rgba(20, 20, 20, 0.05);
   border-radius: 1.5rem;
   padding: 2rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 50px rgba(43, 9, 111, 0.05), 0 4px 12px rgba(0, 0, 0, 0.02);
   height: fit-content;
 }
 
 /* Step Labeling inside forms */
 .form-step {
-  margin-bottom: 2rem;
+  margin-bottom: 1.8rem;
 }
 
 .form-step-title {
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 0.8rem;
   display: flex;
   align-items: center;
@@ -135,10 +141,10 @@ header p {
 }
 
 .select-card {
-  background: rgba(15, 23, 42, 0.4);
+  background: rgba(255, 255, 255, 0.55);
   border: 1px solid var(--border-color);
   border-radius: 1rem;
-  padding: 1rem;
+  padding: 1rem 0.8rem;
   cursor: pointer;
   text-align: center;
   position: relative;
@@ -147,15 +153,16 @@ header p {
 }
 
 .select-card:hover {
-  transform: translateY(-3px);
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(15, 23, 42, 0.6);
+  transform: translateY(-2px);
+  border-color: rgba(87, 7, 214, 0.3);
+  background: #ffffff;
+  box-shadow: 0 8px 20px rgba(43, 9, 111, 0.04);
 }
 
 .select-card.selected {
   border-color: var(--primary-color);
-  background: rgba(6, 182, 212, 0.08);
-  box-shadow: var(--glow-cyan);
+  background: rgba(87, 7, 214, 0.04);
+  box-shadow: 0 4px 15px rgba(87, 7, 214, 0.08);
 }
 
 .select-card.selected::before {
@@ -169,7 +176,7 @@ header p {
 }
 
 .select-card h4 {
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-main);
   margin-bottom: 0.2rem;
@@ -178,6 +185,7 @@ header p {
 .select-card p {
   font-size: 0.75rem;
   color: var(--text-muted);
+  line-height: 1.2;
 }
 
 /* Hide Opaque inputs */
@@ -191,7 +199,7 @@ header p {
 /* Segmented Selector for calculation mode */
 .segmented-control {
   display: flex;
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(20, 20, 20, 0.04);
   border: 1px solid var(--border-color);
   border-radius: 50px;
   padding: 0.3rem;
@@ -204,7 +212,7 @@ header p {
   padding: 0.6rem;
   border-radius: 50px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.85rem;
   color: var(--text-muted);
 }
@@ -212,7 +220,7 @@ header p {
 .segmented-option.active {
   background: var(--gradient-main);
   color: #fff;
-  box-shadow: var(--glow-pink);
+  box-shadow: 0 4px 15px rgba(87, 7, 214, 0.2);
 }
 
 /* Numeric input container */
@@ -223,19 +231,20 @@ header p {
 
 .metric-input-wrapper input {
   width: 100%;
-  padding: 1rem 1rem 1rem 3rem;
-  background: rgba(15, 23, 42, 0.6);
+  padding: 0.9rem 1rem 0.9rem 3rem;
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--border-color);
   border-radius: 1rem;
   color: var(--text-main);
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   font-weight: 700;
   outline: none;
 }
 
 .metric-input-wrapper input:focus {
-  border-color: var(--secondary-color);
-  box-shadow: var(--glow-pink);
+  border-color: var(--primary-color);
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(87, 7, 214, 0.08);
 }
 
 .metric-input-wrapper .input-prefix {
@@ -252,22 +261,22 @@ header p {
 .btn-submit {
   width: 100%;
   padding: 1.1rem;
-  margin-top: 1.5rem;
+  margin-top: 1.2rem;
   border: none;
   border-radius: 1rem;
   background: var(--gradient-main);
   color: #fff;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
   letter-spacing: 0.5px;
   position: relative;
-  box-shadow: 0 4px 15px rgba(217, 70, 239, 0.3);
+  box-shadow: 0 6px 20px rgba(87, 7, 214, 0.15);
 }
 
 .btn-submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+  box-shadow: 0 8px 25px rgba(87, 7, 214, 0.25);
 }
 
 .btn-submit:active {
@@ -293,16 +302,17 @@ header p {
 .dashboard-title-bar h2 {
   font-size: 1.5rem;
   font-weight: 800;
+  color: var(--text-main);
 }
 
 .dashboard-title-bar .badge {
-  background: rgba(6, 182, 212, 0.15);
+  background: rgba(87, 7, 214, 0.06);
   border: 1px solid var(--primary-color);
   color: var(--primary-color);
-  padding: 0.3rem 0.8rem;
+  padding: 0.35rem 0.9rem;
   border-radius: 50px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Metric Cards Grid */
@@ -310,7 +320,7 @@ header p {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 @media (min-width: 600px) {
@@ -320,7 +330,7 @@ header p {
 }
 
 .kpi-card {
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(255, 255, 255, 0.65);
   border: 1px solid var(--border-color);
   border-radius: 1.2rem;
   padding: 1.2rem;
@@ -328,6 +338,7 @@ header p {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 8px 25px rgba(43, 9, 111, 0.02);
 }
 
 .kpi-card::before {
@@ -342,15 +353,15 @@ header p {
 }
 
 .kpi-card .kpi-label {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 700;
   text-transform: uppercase;
   margin-bottom: 0.5rem;
 }
 
 .kpi-card .kpi-value {
-  font-size: 1.3rem;
+  font-size: 1.25rem;
   font-weight: 800;
   color: var(--text-main);
   word-break: break-all;
@@ -388,7 +399,7 @@ header p {
   align-items: center;
   justify-content: space-between;
   padding: 0 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 20px rgba(43, 9, 111, 0.12);
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
@@ -396,7 +407,7 @@ header p {
 
 .funnel-stage:hover {
   transform: scale(1.02);
-  box-shadow: 0 8px 30px rgba(255, 255, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(87, 7, 214, 0.15);
 }
 
 .funnel-stage .stage-name {
@@ -418,7 +429,7 @@ header p {
   font-weight: 800;
   font-size: 1.1rem;
   color: #fff;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
   white-space: nowrap;
   margin-left: 1rem;
 }
@@ -441,19 +452,19 @@ header p {
   top: -5px;
   bottom: -5px;
   width: 2px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(87, 7, 214, 0.15);
   z-index: 1;
 }
 
 .conversion-tag {
-  background: #0f172a;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #ffffff;
+  border: 1px solid rgba(87, 7, 214, 0.15);
   color: var(--primary-color);
   padding: 0.25rem 0.75rem;
   border-radius: 50px;
   font-size: 0.75rem;
   font-weight: 700;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 10px rgba(43, 9, 111, 0.05);
   z-index: 2;
   position: relative;
 }
@@ -476,7 +487,6 @@ header p {
   }
 }
 
-
 /* Empty state / lead magnet intro styling */
 .empty-state {
   display: flex;
@@ -491,14 +501,14 @@ header p {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  background: rgba(6, 182, 212, 0.08);
+  background: rgba(87, 7, 214, 0.05);
   display: inline-flex;
   align-items: center;
   justify-content: center;
   color: var(--primary-color);
   font-size: 2.2rem;
   margin-bottom: 1.5rem;
-  box-shadow: var(--glow-cyan);
+  box-shadow: 0 4px 20px rgba(87, 7, 214, 0.05);
 }
 
 .empty-state h3 {
@@ -525,7 +535,7 @@ header p {
 .spinner {
   width: 50px;
   height: 50px;
-  border: 3px solid rgba(255, 255, 255, 0.05);
+  border: 3px solid rgba(87, 7, 214, 0.05);
   border-top-color: var(--primary-color);
   border-bottom-color: var(--secondary-color);
   border-radius: 50%;
