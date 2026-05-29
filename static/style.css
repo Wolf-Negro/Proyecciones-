@@ -1,5 +1,5 @@
-/* C:\Users\cruzs\Mis Proyectos\Herramientas\Proyecciones\static\style.css */
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
 
 :root {
   --font-primary: 'Outfit', sans-serif;
@@ -498,40 +498,229 @@ header p {
   }
 }
 
-/* Empty state / lead magnet intro styling */
-.empty-state {
+/* Empty state / landing dashboard styling */
+.empty-state-landing {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 4rem 2rem;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 480px;
 }
 
-.empty-state-icon {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background: rgba(87, 7, 214, 0.05);
+/* 1. Header of empty state */
+.empty-landing-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.empty-header-left h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.empty-header-left p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+/* Glassmorphic Algorithm Badge Card */
+.algo-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(87, 7, 214, 0.03);
+  border: 1px solid rgba(87, 7, 214, 0.08);
+  border-radius: 12px;
+  padding: 0.5rem 0.8rem;
+  max-width: 320px;
+  box-shadow: 0 4px 15px rgba(43, 9, 111, 0.01);
+}
+
+.algo-card-logo-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 0.3rem;
+  box-shadow: 0 3px 6px rgba(87, 7, 214, 0.06);
+}
+
+.algo-logo {
+  height: 20px;
+  width: 20px;
+  object-fit: contain;
+}
+
+.algo-card-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.algo-card-text strong {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.algo-card-text p {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+/* 2. Center Cursive Core Call to Action */
+.empty-landing-center {
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.empty-landing-center h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: var(--text-main);
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.empty-landing-center h2 span {
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.center-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  max-width: 440px;
+  margin: 0.6rem auto 1.2rem auto;
+  line-height: 1.4;
+}
+
+/* Handwritten caveart note with SVG arrow */
+.handwritten-note-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+
+.handwritten-arrow {
+  flex-shrink: 0;
+  transform: rotate(-10deg);
+}
+
+.handwritten-text {
+  font-family: 'Caveat', cursive;
+  font-size: 1.35rem;
   color: var(--primary-color);
-  font-size: 2.2rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 4px 20px rgba(87, 7, 214, 0.05);
-}
-
-.empty-state h3 {
-  font-size: 1.4rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.2px;
+  transform: rotate(-2deg);
 }
 
-.empty-state p {
+/* 3. Bottom Features Horizontal block container */
+.empty-features-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.2rem;
+  background: rgba(87, 7, 214, 0.02);
+  border: 1px solid rgba(87, 7, 214, 0.05);
+  border-radius: 1.2rem;
+  padding: 1.2rem;
+}
+
+@media (min-width: 650px) {
+  .empty-features-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.feature-icon {
+  font-size: 1.5rem;
+  background: #ffffff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(43, 9, 111, 0.04);
+  flex-shrink: 0;
+}
+
+.feature-content h4 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.feature-content p {
+  font-size: 0.7rem;
   color: var(--text-muted);
-  font-size: 0.95rem;
-  max-width: 350px;
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+/* 4. Elegant Footer Info Row at bottom of app */
+.app-footer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  width: 100%;
+}
+
+@media (min-width: 650px) {
+  .app-footer {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.footer-item {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.footer-icon {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  opacity: 0.85;
+}
+
+.footer-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-text strong {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.footer-text span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  margin-top: 1px;
 }
 
 /* Loader Animation */

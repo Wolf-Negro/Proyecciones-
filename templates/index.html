@@ -126,13 +126,65 @@
             </section>
 
             <!-- Right Side: Beautiful Dashboard & Visual Funnel (Glass Panel) -->
-            <section class="glass-panel" style="min-height: 500px;">
+            <section class="glass-panel" style="min-height: 520px;">
                 
                 <!-- 1. EMPTY STATE (Visible before running) -->
-                <div class="empty-state" id="dashboard-empty">
-                    <div class="empty-state-icon">📊</div>
-                    <h3>Listo para proyectar</h3>
-                    <p>Completa el cuestionario de la izquierda y haz clic en "Proyectar Resultados" para calcular tu embudo y KPIS.</p>
+                <div class="empty-state-landing" id="dashboard-empty">
+                    <!-- Top Header Row -->
+                    <div class="empty-landing-header">
+                        <div class="empty-header-left">
+                            <h3>Tu proyección personalizada</h3>
+                            <p>Basado en datos reales de negocios como el tuyo.</p>
+                        </div>
+                        <div class="algo-card">
+                            <div class="algo-card-logo-wrap">
+                                <img src="/static/isotype-violet.png" alt="al" class="algo-logo" />
+                            </div>
+                            <div class="algo-card-text">
+                                <strong>Algoritmo Alucinando™</strong>
+                                <p>Usamos machine learning y datos reales de +500 negocios para calcular tu proyección.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Body -->
+                    <div class="empty-landing-center">
+                        <h2>Listo para <br><span>proyectar</span></h2>
+                        <p class="center-subtitle">Completa el cuestionario de la izquierda y descubre cuánto deberías invertir para alcanzar tus objetivos.</p>
+                        
+                        <!-- Handwritten Cursive note with drawing SVG arrow -->
+                        <div class="handwritten-note-wrapper">
+                            <svg class="handwritten-arrow" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 8C14 18 20 22 28 20M28 20L22 17M28 20L25 25" stroke="#5707D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="handwritten-text">Solo te tomará 2 minutos y tendrás una proyección clara y realista.</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Features Columns Grid -->
+                    <div class="empty-features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-content">
+                                <h4>Datos precisos</h4>
+                                <p>Algoritmos basados en casos reales y actualizados.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🛡️</div>
+                            <div class="feature-content">
+                                <h4>Estrategia personalizada</h4>
+                                <p>Recomendaciones adaptadas a tu negocio y mercado.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🚀</div>
+                            <div class="feature-content">
+                                <h4>Resultados medibles</h4>
+                                <p>Proyecciones alcanzables y 100% medibles.</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- 2. LOADER (Visible during query) -->
@@ -198,6 +250,31 @@
 
             </section>
         </div>
+
+        <!-- Footer Info Bar -->
+        <footer class="app-footer">
+            <div class="footer-item">
+                <span class="footer-icon">🕒</span>
+                <div class="footer-text">
+                    <strong>2 minutos</strong>
+                    <span>Tiempo promedio de simulación.</span>
+                </div>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">👥</span>
+                <div class="footer-text">
+                    <strong>+500 negocios</strong>
+                    <span>Ya usaron nuestro simulador.</span>
+                </div>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">🔒</span>
+                <div class="footer-text">
+                    <strong>Sin compromiso</strong>
+                    <span>Recibe tu proyección sin compromiso.</span>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <!-- Script file -->
