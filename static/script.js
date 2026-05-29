@@ -77,6 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Dynamic Funnel Renderer — Full-width bars with text inside
   const renderFunnel = (data) => {
     funnelBlocksContainer.innerHTML = '';
+
+    // Nota visible solo en móvil
+    const mobileHint = document.createElement('div');
+    mobileHint.className = 'funnel-mobile-hint';
+    mobileHint.innerHTML = '👆 Toca cada barra para ver el detalle completo';
+    funnelBlocksContainer.appendChild(mobileHint);
     
     const stages = [
       { key: 'reach',      name: '1. Alcance Mensual',    color: '#2D2B5E', offset: '0px',   sub: 'Personas que ven tus anuncios',     icon: '📢' },
@@ -112,6 +118,26 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
       `;
       funnelBlocksContainer.appendChild(row);
+
+      // Tooltip al tocar la barra (en móvil el texto se trunca)
+      row.querySelector('.funnel-bar').addEventListener('click', (e) => {
+        document.querySelectorAll('.funnel-tooltip').forEach(t => t.remove());
+        const tip = document.createElement('div');
+        tip.className = 'funnel-tooltip';
+        tip.innerHTML = `
+          <span class="funnel-tooltip-icon">${stage.icon}</span>
+          <div class="funnel-tooltip-body">
+            <strong>${stage.name}</strong>
+            <span>${stage.sub}</span>
+          </div>
+          <div class="funnel-tooltip-value">${formatNum(range[0])} – ${formatNum(range[1])}</div>
+        `;
+        row.after(tip);
+        setTimeout(() => {
+          document.addEventListener('click', () => tip.remove(), { once: true });
+        }, 50);
+        e.stopPropagation();
+      });
 
       // Badge flotante entre barras — solapa la barra de arriba y la de abajo
       if (idx < stages.length - 1) {

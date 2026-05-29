@@ -1269,6 +1269,84 @@ header {
   100% { transform: rotate(360deg); }
 }
 
+/* =====================================================
+   MOBILE FUNNEL HINT + TOOLTIP
+   ===================================================== */
+
+/* Nota "toca para ver más" — solo en móvil */
+.funnel-mobile-hint {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .funnel-mobile-hint {
+    display: block;
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: rgba(87, 7, 214, 0.05);
+    border: 1px dashed rgba(87, 7, 214, 0.2);
+    border-radius: 50px;
+    padding: 0.3rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+}
+
+/* Tooltip al tocar una barra */
+.funnel-tooltip {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: #fff;
+  border: 1px solid rgba(87, 7, 214, 0.14);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  margin: 3px auto;
+  width: calc(100% - 8px);
+  box-shadow: 0 8px 24px rgba(43, 9, 111, 0.1);
+  animation: tipIn 0.18s ease;
+  z-index: 20;
+  position: relative;
+}
+
+@keyframes tipIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.funnel-tooltip-icon {
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.funnel-tooltip-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.funnel-tooltip-body strong {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.funnel-tooltip-body span {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.funnel-tooltip-value {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 /* Toast de exportación */
 .export-toast {
   position: fixed;
