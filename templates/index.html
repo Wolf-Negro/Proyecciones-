@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Proyecciones de Venta | Alucinando</title>
+    <meta name="description" content="Calcula y simula tu embudo completo de conversión a partir de tu presupuesto o meta de ventas mensuales." />
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Style link -->
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Brand Header -->
+        <header>
+            <h1>Simulador de Conversión</h1>
+            <p>Calcula tu embudo de ventas inverso y proyecta tus ganancias.</p>
+        </header>
+
+        <!-- Main Split Panel Grid -->
+        <div class="simulator-wrapper">
+            
+            <!-- Left Side: Interactive Quiz/Inputs (Glass Panel) -->
+            <section class="glass-panel">
+                <form id="quiz-form">
+                    
+                    <!-- Question 1: Business Type -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>1</span> Modelo de Negocio
+                        </div>
+                        <div class="cards-row">
+                            <div class="select-card selected" data-value="B2C" data-group="business_type">
+                                <h4>B2C</h4>
+                                <p>Consumidor final</p>
+                                <input type="radio" name="business_type" value="B2C" checked class="hidden-radio" />
+                            </div>
+                            <div class="select-card" data-value="B2B" data-group="business_type">
+                                <h4>B2B</h4>
+                                <p>Corporativo / Empresas</p>
+                                <input type="radio" name="business_type" value="B2B" class="hidden-radio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2: Ticket Average -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>2</span> Ticket Promedio
+                        </div>
+                        <div class="cards-row">
+                            <div class="select-card" data-value="high_ticket" data-group="ticket">
+                                <h4>Alto</h4>
+                                <p>Venta premium</p>
+                                <input type="radio" name="ticket" value="high_ticket" class="hidden-radio" />
+                            </div>
+                            <div class="select-card selected" data-value="low_ticket" data-group="ticket">
+                                <h4>Bajo</h4>
+                                <p>Compra rápida / Impulso</p>
+                                <input type="radio" name="ticket" value="low_ticket" checked class="hidden-radio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3: Complexity -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>3</span> Dificultad de Venta
+                        </div>
+                        <div class="cards-row three-cols">
+                            <div class="select-card selected" data-value="easy" data-group="difficulty">
+                                <h4>Fácil</h4>
+                                <p>Rápido</p>
+                                <input type="radio" name="difficulty" value="easy" checked class="hidden-radio" />
+                            </div>
+                            <div class="select-card" data-value="medium" data-group="difficulty">
+                                <h4>Media</h4>
+                                <p>Considerado</p>
+                                <input type="radio" name="difficulty" value="medium" class="hidden-radio" />
+                            </div>
+                            <div class="select-card" data-value="hard" data-group="difficulty">
+                                <h4>Difícil</h4>
+                                <p>Consultivo</p>
+                                <input type="radio" name="difficulty" value="hard" class="hidden-radio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Metric Goal Mode Toggle -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>4</span> Método de Cálculo
+                        </div>
+                        
+                        <!-- Premium Segmented Control -->
+                        <div class="segmented-control">
+                            <div class="segmented-option active" data-mode="investment">Por Inversión</div>
+                            <div class="segmented-option" data-mode="sales_goal">Por Meta de Ventas</div>
+                        </div>
+                        
+                        <!-- Hidden true mode input -->
+                        <input type="hidden" name="mode" id="true-mode-input" value="investment" />
+
+                        <!-- Dynamic Metric inputs -->
+                        <div id="investment-input-group">
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Inversión Mensual Disponible</label>
+                            <div class="metric-input-wrapper">
+                                <span class="input-prefix">S/.</span>
+                                <input type="number" name="investment" min="500" step="100" value="3800" placeholder="Ej. 3800" />
+                            </div>
+                        </div>
+                        
+                        <div id="sales-input-group" style="display: none;">
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Meta de Ventas Mensuales</label>
+                            <div class="metric-input-wrapper">
+                                <span class="input-prefix">#</span>
+                                <input type="number" name="target_sales" min="1" step="1" value="100" placeholder="Ej. 100" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Proyectar Resultados</button>
+                </form>
+            </section>
+
+            <!-- Right Side: Beautiful Dashboard & Visual Funnel (Glass Panel) -->
+            <section class="glass-panel" style="min-height: 500px;">
+                
+                <!-- 1. EMPTY STATE (Visible before running) -->
+                <div class="empty-state" id="dashboard-empty">
+                    <div class="empty-state-icon">📊</div>
+                    <h3>Listo para proyectar</h3>
+                    <p>Completa el cuestionario de la izquierda y haz clic en "Proyectar Resultados" para calcular tu embudo y KPIS.</p>
+                </div>
+
+                <!-- 2. LOADER (Visible during query) -->
+                <div class="loader-wrapper" id="dashboard-loader" style="display: none;">
+                    <div class="spinner"></div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Calibrando algoritmos y calculando embudo...</p>
+                </div>
+
+                <!-- 3. DASHBOARD VIEW (Visible after calculate) -->
+                <div class="results-dashboard" id="dashboard-content" style="display: none;">
+                    <div class="dashboard-title-bar">
+                        <h2>Métricas Proyectadas</h2>
+                        <span class="badge" id="mode-badge">Calculado por Presupuesto</span>
+                    </div>
+
+                    <!-- KPI Metric Cards Grid -->
+                    <div class="metrics-grid">
+                        <!-- Investment -->
+                        <div class="kpi-card" style="--card-accent: var(--secondary-color);">
+                            <div class="kpi-label">Inversión (Presupuesto)</div>
+                            <div class="kpi-value" id="kpi-investment">S/. 3,800</div>
+                            <div class="kpi-subtext">Capital de pauta mensual</div>
+                        </div>
+                        <!-- Alcance -->
+                        <div class="kpi-card" style="--card-accent: var(--primary-color);">
+                            <div class="kpi-label">Alcance Promedio</div>
+                            <div class="kpi-value" id="kpi-reach">140K - 240K</div>
+                            <div class="kpi-subtext">Personas alcanzadas</div>
+                        </div>
+                        <!-- Clics -->
+                        <div class="kpi-card" style="--card-accent: var(--accent-color);">
+                            <div class="kpi-label">Clics Esperados</div>
+                            <div class="kpi-value" id="kpi-clicks">8K - 13K</div>
+                            <div class="kpi-subtext">Tráfico a anuncios</div>
+                        </div>
+                        <!-- Visitas Landing -->
+                        <div class="kpi-card" style="--card-accent: #10b981;">
+                            <div class="kpi-label">Visitas en Web</div>
+                            <div class="kpi-value" id="kpi-visits">6.3K - 10.4K</div>
+                            <div class="kpi-subtext">Carga de Landing Page</div>
+                        </div>
+                        <!-- Leads WhatsApp -->
+                        <div class="kpi-card" style="--card-accent: #f59e0b;">
+                            <div class="kpi-label">Leads / Chats</div>
+                            <div class="kpi-value" id="kpi-leads">760 - 950</div>
+                            <div class="kpi-subtext">Conversión a WhatsApp</div>
+                        </div>
+                        <!-- Ventas -->
+                        <div class="kpi-card" style="--card-accent: #ef4444;">
+                            <div class="kpi-label">Ventas Totales</div>
+                            <div class="kpi-value" id="kpi-sales">99 - 166</div>
+                            <div class="kpi-subtext">Cierres logrados</div>
+                        </div>
+                    </div>
+
+                    <!-- Graphical Visual Funnel -->
+                    <h3 style="font-size: 1.1rem; margin-top: 1.5rem; font-weight: 700; color: var(--text-main);">Visualización de Embudo Inverso</h3>
+                    
+                    <div class="funnel-container" id="funnel-blocks-container">
+                        <!-- Stages will be dynamically generated by JS -->
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
+    <!-- Script file -->
+    <script src="/static/script.js"></script>
+</body>
+</html>
