@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_2" data-name="Capa 2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 240.19 232.17">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: url(#Degradado_sin_nombre_7);
+      }
+
+      .cls-2 {
+        fill: url(#Degradado_sin_nombre_7-2);
+      }
+    </style>
+    <linearGradient id="Degradado_sin_nombre_7" data-name="Degradado sin nombre 7" x1="180.28" y1="232.17" x2="180.28" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6f6f6" stop-opacity="0"/>
+      <stop offset="1" stop-color="#f6f6f6"/>
+    </linearGradient>
+    <linearGradient id="Degradado_sin_nombre_7-2" data-name="Degradado sin nombre 7" x1="59.91" x2="59.91" xlink:href="#Degradado_sin_nombre_7"/>
+  </defs>
+  <g id="Capa_1-2" data-name="Capa 1">
+    <g>
+      <polygon class="cls-1" points="216.42 186.48 216.42 186.48 240.19 186.48 174.72 0 120.37 0 185.84 186.48 186.48 186.48 186.48 186.48 162.43 186.48 178.48 232.17 232.82 232.17 216.78 186.48 216.42 186.48"/>
+      <polygon class="cls-2" points="54.35 186.48 119.82 0 65.47 0 0 186.48 24.25 186.48 24.25 186.48 23.41 186.48 7.37 232.17 61.71 232.17 77.76 186.48 54.19 186.48 54.19 186.48 54.35 186.48"/>
+    </g>
+  </g>
+</svg>
