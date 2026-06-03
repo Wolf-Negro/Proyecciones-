@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulador de Inversión | Alucinando</title>
+    <meta name="description" content="Calcula tu inversión ideal y proyecta tus resultados." />
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <!-- Style link -->
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="container">
+        <!-- Brand Header -->
+        <header>
+            <div class="header-logo">
+                <img src="/static/logo-violet.png" alt="Alucinando" />
+            </div>
+            <div class="header-title">
+                <h1>Simulador de <span>Inversión</span></h1>
+                <p>Calcula tu inversión ideal y proyecta tus resultados.</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-what-is" id="btn-what-is" type="button">
+                    <span class="btn-what-icon">💡</span>
+                    <div class="btn-what-text">
+                        <strong>¿Qué es esto?</strong>
+                        <span>Descubre cómo funciona</span>
+                    </div>
+                </button>
+                <button class="btn-export" id="btn-export" type="button">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Exportar proyección
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Split Panel Grid -->
+        <div class="simulator-wrapper">
+            
+            <!-- Left Side: Interactive Quiz/Inputs (Glass Panel) -->
+            <section class="glass-panel">
+                <form id="quiz-form">
+                    
+                    <!-- Question 1: Business Type -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>1</span>
+                            <div><strong>Modelo de negocio</strong><p class="form-step-subtitle">Selecciona el tipo de empresa.</p></div>
+                        </div>
+                        <div class="cards-row">
+                            <div class="select-card selected" data-value="B2C" data-group="business_type">
+                                <h4>B2C</h4>
+                                <p>Consumidor final</p>
+                                <span class="card-icon">👥</span>
+                                <input type="radio" name="business_type" value="B2C" checked class="hidden-radio" />
+                            </div>
+                            <div class="select-card" data-value="B2B" data-group="business_type">
+                                <h4>B2B</h4>
+                                <p>Corporativo / Empresas</p>
+                                <span class="card-icon">🏢</span>
+                                <input type="radio" name="business_type" value="B2B" class="hidden-radio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 2: Ticket Average -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>2</span>
+                            <div><strong>Ticket promedio</strong><p class="form-step-subtitle">¿Cuál es el valor promedio de tu venta?</p></div>
+                        </div>
+                        <div class="cards-row">
+                            <div class="select-card" data-value="high_ticket" data-group="ticket">
+                                <h4>Alto</h4>
+                                <p>Venta premium</p>
+                                <span class="card-icon">💎</span>
+                                <input type="radio" name="ticket" value="high_ticket" class="hidden-radio" />
+                            </div>
+                            <div class="select-card selected" data-value="low_ticket" data-group="ticket">
+                                <h4>Bajo</h4>
+                                <p>Compra rápida / Impulso</p>
+                                <span class="card-icon">🛒</span>
+                                <input type="radio" name="ticket" value="low_ticket" checked class="hidden-radio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Question 3: Complexity -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>3</span>
+                            <div><strong>Dificultad de venta</strong><p class="form-step-subtitle">¿Qué tan fácil es convencer a tu cliente?</p></div>
+                        </div>
+                        <div class="cards-row three-cols">
+                            <div class="select-card selected" data-value="easy" data-group="difficulty">
+                                <h4>Fácil</h4>
+                                <p>Rápido</p>
+                                <span class="card-icon">😊</span>
+                                <input type="radio" name="difficulty" value="easy" checked class="hidden-radio" />
+                            </div>
+                            <div class="select-card" data-value="medium" data-group="difficulty">
+                                <h4>Media</h4>
+                                <p>Considerado</p>
+                                <span class="card-icon">😐</span>
+                                <input type="radio" name="difficulty" value="medium" class="hidden-radio" />
+                            </div>
+                            <div class="select-card" data-value="hard" data-group="difficulty">
+                                <h4>Difícil</h4>
+                                <p>Consultivo</p>
+                                <span class="card-icon">😟</span>
+                                <input type="radio" name="difficulty" value="hard" class="hidden-radio" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Metric Goal Mode Toggle -->
+                    <div class="form-step">
+                        <div class="form-step-title">
+                            <span>4</span>
+                            <div><strong>Método de cálculo</strong><p class="form-step-subtitle">¿Cómo deseas calcular tu proyección?</p></div>
+                        </div>
+
+                        <!-- Mode cards — mismo look que las select-cards -->
+                        <div class="segmented-control mode-cards">
+                            <div class="segmented-option active" data-mode="investment">
+                                <span class="mode-icon">📊</span>
+                                <strong>Por inversión</strong>
+                                <small>¿Cuánto invertir?</small>
+                            </div>
+                            <div class="segmented-option" data-mode="sales_goal">
+                                <span class="mode-icon">🎯</span>
+                                <strong>Por meta de ventas</strong>
+                                <small>¿Cuántas quieres vender?</small>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden true mode input -->
+                        <input type="hidden" name="mode" id="true-mode-input" value="investment" />
+
+                        <!-- Dynamic Metric inputs -->
+                        <div id="investment-input-group">
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Inversión Mensual Disponible</label>
+                            <div class="metric-input-wrapper">
+                                <span class="input-prefix">S/.</span>
+                                <input type="number" name="investment" min="500" step="100" value="3800" placeholder="Ej. 3800" />
+                            </div>
+                        </div>
+                        
+                        <div id="sales-input-group" style="display: none;">
+                            <label style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Meta de Ventas Mensuales</label>
+                            <div class="metric-input-wrapper">
+                                <span class="input-prefix">#</span>
+                                <input type="number" name="target_sales" min="1" step="1" value="100" placeholder="Ej. 100" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">✨ Calcular mi proyección →</button>
+                </form>
+            </section>
+
+            <!-- Right Side: Beautiful Dashboard & Visual Funnel (Glass Panel) -->
+            <section class="glass-panel" style="min-height: 520px;">
+                
+                <!-- 1. EMPTY STATE (Visible before running) -->
+                <div class="empty-state-landing" id="dashboard-empty">
+                    <!-- Top Header Row -->
+                    <div class="empty-landing-header">
+                        <div class="empty-header-left">
+                            <h3>Tu proyección personalizada</h3>
+                            <p>Basado en datos reales de negocios como el tuyo.</p>
+                        </div>
+                        <div class="algo-card">
+                            <div class="algo-card-logo-wrap">
+                                <img src="/static/isotype-violet.png" alt="al" class="algo-logo" />
+                            </div>
+                            <div class="algo-card-text">
+                                <strong>Algoritmo Alucinando™</strong>
+                                <p>Usamos machine learning y datos reales de +500 negocios para calcular tu proyección.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center Body -->
+                    <div class="empty-landing-center">
+                        <h2>Listo para <br><span>proyectar</span></h2>
+                        <p class="center-subtitle">Completa el cuestionario de la izquierda y descubre cuánto deberías invertir para alcanzar tus objetivos.</p>
+                        
+                        <!-- Handwritten Cursive note with drawing SVG arrow -->
+                        <div class="handwritten-note-wrapper">
+                            <svg class="handwritten-arrow" width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M6 8C14 18 20 22 28 20M28 20L22 17M28 20L25 25" stroke="#5707D6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <span class="handwritten-text">Solo te tomará 2 minutos y tendrás una proyección clara y realista.</span>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Features Columns Grid -->
+                    <div class="empty-features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-content">
+                                <h4>Datos precisos</h4>
+                                <p>Algoritmos basados en casos reales y actualizados.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🛡️</div>
+                            <div class="feature-content">
+                                <h4>Estrategia personalizada</h4>
+                                <p>Recomendaciones adaptadas a tu negocio y mercado.</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">🚀</div>
+                            <div class="feature-content">
+                                <h4>Resultados medibles</h4>
+                                <p>Proyecciones alcanzables y 100% medibles.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. LOADER (Visible during query) -->
+                <div class="loader-wrapper" id="dashboard-loader" style="display: none;">
+                    <div class="spinner"></div>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">Calibrando algoritmos y calculando embudo...</p>
+                </div>
+
+                <!-- 3. DASHBOARD VIEW (Visible after calculate) -->
+                <div class="results-dashboard" id="dashboard-content" style="display: none;">
+
+                    <!-- Title Row -->
+                    <div class="results-title-row">
+                        <div class="results-title-left">
+                            <div class="results-title-badge">
+                                <img src="/static/isotype-violet.png" alt="Alucinando" class="results-title-icon" />
+                            </div>
+                            <div>
+                                <h2>Tu proyección está lista 🎉</h2>
+                                <p>Estos son los resultados estimados de tu inversión.</p>
+                            </div>
+                            <svg class="results-title-arrow" width="66" height="58" viewBox="0 0 66 58" fill="none" style="align-self:flex-end; margin-bottom:-28px;">
+                                <path d="M8 6 C 12 6 44 8 56 48" stroke="#5707D6" stroke-width="2.5" stroke-linecap="round"/>
+                                <path d="M48 40 L56 48 L62 40" stroke="#5707D6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Two Column: Funnel + Sidebar -->
+                    <div class="results-two-col">
+                        <!-- Left: Funnel Visualization -->
+                        <div class="funnel-column">
+                            <div class="funnel-container" id="funnel-blocks-container">
+                                <!-- JS generated stages -->
+                            </div>
+                        </div>
+
+                        <!-- Right: Summary Sidebar -->
+                        <div class="summary-sidebar">
+                            <h3>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                                Resumen de tu proyección
+                            </h3>
+                            <div class="sidebar-metric">
+                                <div class="sidebar-metric-icon" style="background:#0E7490;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                                </div>
+                                <div class="sidebar-metric-body">
+                                    <span class="sidebar-metric-label">Inversión mensual</span>
+                                    <span class="sidebar-metric-value" id="summary-investment">S/ 3,800</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-metric">
+                                <div class="sidebar-metric-icon" style="background:#D97706;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                                </div>
+                                <div class="sidebar-metric-body">
+                                    <span class="sidebar-metric-label">Conversión total</span>
+                                    <span class="sidebar-metric-value" id="summary-conversion">27.3%</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-metric">
+                                <div class="sidebar-metric-icon" style="background:#7C3AED;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                                </div>
+                                <div class="sidebar-metric-body">
+                                    <span class="sidebar-metric-label">Ventas estimadas</span>
+                                    <span class="sidebar-metric-value" id="summary-sales">95 – 350</span>
+                                </div>
+                            </div>
+                            <div class="sidebar-methodology">
+                                <div class="sidebar-metric-icon" style="background:#2563EB; box-shadow:none;">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+                                </div>
+                                <div class="sidebar-metric-body">
+                                    <strong>Metodología Alucinando</strong>
+                                    <p>Datos reales + IA + estrategia personalizada.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Features Row (4 cols) -->
+                    <div class="results-features-row">
+                        <div class="results-feature-item">
+                            <div class="results-feature-icon" style="background:#0D9488;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            </div>
+                            <div>
+                                <h4>Datos precisos</h4>
+                                <p>Algoritmos basados en casos reales.</p>
+                            </div>
+                        </div>
+                        <div class="results-feature-item">
+                            <div class="results-feature-icon" style="background:#2563EB;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            </div>
+                            <div>
+                                <h4>Estrategia personalizada</h4>
+                                <p>Recomendaciones adaptadas a tu negocio.</p>
+                            </div>
+                        </div>
+                        <div class="results-feature-item">
+                            <div class="results-feature-icon" style="background:#DB2777;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
+                            </div>
+                            <div>
+                                <h4>Resultados reales</h4>
+                                <p>Proyecciones alcanzables y medibles.</p>
+                            </div>
+                        </div>
+                        <div class="results-feature-item">
+                            <div class="results-feature-icon" style="background:#D97706;">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                            </div>
+                            <div>
+                                <h4>Proyección dinámica</h4>
+                                <p>Los resultados pueden variar según mercado y ejecución.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hidden KPI holders for JS compatibility -->
+                    <div style="display:none;">
+                        <span id="kpi-investment"></span>
+                        <span id="kpi-reach"></span>
+                        <span id="kpi-clicks"></span>
+                        <span id="kpi-visits"></span>
+                        <span id="kpi-leads"></span>
+                        <span id="kpi-sales"></span>
+                        <span id="mode-badge"></span>
+                    </div>
+                </div>
+
+                <!-- Modal: ¿Qué es esto? -->
+                <div class="modal-overlay" id="modal-what-is" style="display:none;">
+                    <div class="modal-content">
+                        <button class="modal-close" id="modal-close-what" type="button">&times;</button>
+                        <div class="modal-header">
+                            <img src="/static/isotype-violet.png" alt="Alucinando" style="height:40px; object-fit:contain;" />
+                            <h2>¿Cómo funciona?</h2>
+                        </div>
+                        <p>Nuestra <strong>Calculadora de Crecimiento</strong> utiliza el <em>Algoritmo Alucinando™</em>, basado en datos reales de más de 500 negocios en Latinoamérica.</p>
+                        <h4>📊 Metodología del Embudo</h4>
+                        <ul>
+                            <li><strong>Alcance:</strong> Personas que verán tus anuncios según tu inversión.</li>
+                            <li><strong>CTR:</strong> % de personas que hacen clic (promedio por industria).</li>
+                            <li><strong>Visitas:</strong> Tráfico real a tu landing page (descontando rebote).</li>
+                            <li><strong>Leads:</strong> Contactos que abren chat o dejan datos.</li>
+                            <li><strong>Prospectos:</strong> Leads calificados por filtro de IA.</li>
+                            <li><strong>Ventas:</strong> Cierres estimados según tu ratio de conversión.</li>
+                        </ul>
+                        <div class="modal-disclaimer">
+                            <span>⚠️</span>
+                            <p>Los resultados son estimaciones basadas en promedios y pueden variar según ejecución, mercado y temporada.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+
+        <!-- Footer Info Bar -->
+        <footer class="app-footer">
+            <div class="footer-item">
+                <span class="footer-icon">🕒</span>
+                <div class="footer-text">
+                    <strong>2 minutos</strong>
+                    <span>Tiempo promedio de simulación.</span>
+                </div>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">👥</span>
+                <div class="footer-text">
+                    <strong>+500 negocios</strong>
+                    <span>Ya usaron nuestro simulador.</span>
+                </div>
+            </div>
+            <div class="footer-item">
+                <span class="footer-icon">🔒</span>
+                <div class="footer-text">
+                    <strong>Sin compromiso</strong>
+                    <span>Recibe tu proyección sin compromiso.</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Export libs — deben cargar ANTES que script.js -->
+    <script src="/static/html2canvas.min.js?v=1"></script>
+    <script src="/static/jspdf.umd.min.js?v=1"></script>
+    <!-- Script file -->
+    <script src="/static/script.js?v=1"></script>
+</body>
+</html>
