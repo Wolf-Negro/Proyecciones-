@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const kpiVisits = document.getElementById('kpi-visits');
   const kpiLeads = document.getElementById('kpi-leads');
   const kpiSales = document.getElementById('kpi-sales');
+  const kpiRevenue = document.getElementById('kpi-revenue');
   
   const funnelBlocksContainer = document.getElementById('funnel-blocks-container');
 
@@ -88,9 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { key: 'reach',      name: '1. Alcance Mensual',    color: '#2D2B5E', offset: '0px',   sub: 'Personas que ven tus anuncios',     icon: '📢' },
       { key: 'clicks',     name: '2. Clics en Anuncios',  color: '#3D3A8C', offset: '55px',  sub: 'Interés inicial en campañas',        icon: '🖱️' },
       { key: 'visits',     name: '3. Visitas en Landing', color: '#5C5AAD', offset: '110px', sub: 'Llegaron a tu página web',           icon: '🌐' },
-      { key: 'leads',      name: '4. Contactos WhatsApp', color: '#8B5BA6', offset: '165px', sub: 'Abrieron chat o registraron datos',  icon: '💬' },
-      { key: 'interested', name: '5. Prospectos Reales',  color: '#C06BA0', offset: '220px', sub: 'Filtro por Inteligencia Artificial', icon: '🎯' },
-      { key: 'sales',      name: '6. Ventas Estimadas',   color: '#E8729A', offset: '275px', sub: 'Cierres de clientes logrados',       icon: '💰' }
+      { key: 'leads',      name: '4. Contactos WhatsApp', color: '#0E7490', offset: '165px', sub: 'Abrieron chat o registraron datos',  icon: '💬' },
+      { key: 'interested', name: '5. Prospectos Reales',  color: '#B45309', offset: '220px', sub: 'Filtro por Inteligencia Artificial', icon: '🎯' },
+      { key: 'sales',      name: '6. Ventas Estimadas',   color: '#15803D', offset: '275px', sub: 'Cierres de clientes logrados',       icon: '💰' }
     ];
 
     const conversionLabels = {
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rate = curAvg > 0 ? ((nextAvg / curAvg) * 100).toFixed(1) : '0.0';
 
         const connector = document.createElement('div');
-        connector.className = 'funnel-badge-connector';
+        connector.className = 'funnel-badge-connector' + (idx === stages.length - 2 ? ' funnel-last-separator' : '');
         connector.innerHTML = `
           <div class="funnel-badge-circle">
             <svg width="7" height="8" viewBox="0 0 10 12" fill="none">
@@ -209,6 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const summaryInvestment = document.getElementById('summary-investment');
         const summaryConversion = document.getElementById('summary-conversion');
         const summarySales = document.getElementById('summary-sales');
+        const summaryRevenue = document.getElementById('summary-revenue');
 
         if (data.investment) {
           summaryInvestment.textContent = `S/ ${formatNum(data.investment[0])} – ${formatNum(data.investment[1])}`;
@@ -221,6 +223,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalConversion = avgInterested > 0 ? ((avgSales / avgInterested) * 100).toFixed(1) : '0.0';
         summaryConversion.textContent = `${totalConversion}%`;
         summarySales.textContent = `${formatNum(data.sales[0])} – ${formatNum(data.sales[1])}`;
+
+        if (data.revenue && summaryRevenue) {
+          const revMin = formatNum(data.revenue[0]);
+          const revMax = formatNum(data.revenue[1]);
+          summaryRevenue.textContent = revMin === revMax
+            ? `S/ ${revMin}`
+            : `S/ ${revMin} – ${revMax}`;
+          if (kpiRevenue) kpiRevenue.textContent = summaryRevenue.textContent;
+        }
 
         // Transition views
         loaderWrapper.style.display = 'none';

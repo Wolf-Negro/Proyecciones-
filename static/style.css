@@ -580,6 +580,17 @@ header {
   margin: -11px 0;
 }
 
+.funnel-badge-connector.funnel-last-separator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -40px;
+  right: -40px;
+  border-top: 2px dashed rgba(160, 160, 160, 0.55);
+  pointer-events: none;
+  z-index: 20;
+}
+
 .funnel-badge-circle {
   width: 18px;
   height: 18px;

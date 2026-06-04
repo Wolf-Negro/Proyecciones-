@@ -11,6 +11,7 @@ BASE_RANGES = {
     "interested_to_sale": (0.20, 0.25)   # 20% - 25%
 }
 
+
 # Adjustment factors based on business profile
 ADJUSTMENTS = {
     "B2B": {
@@ -39,7 +40,10 @@ def calculate_funnel(data):
     biz = data.get("business_type")  # B2B or B2C
     ticket = data.get("ticket")       # high or low
     difficulty = data.get("difficulty")  # hard, medium, easy
-    factor = ADJUSTMENTS.get(biz, {}).get(ticket, 1.0) * ADJUSTMENTS.get(biz, {}).get(difficulty, 1.0)
+    price_midpoint = max(1, float(data.get("product_price", 500)))
+    # Higher price → harder to close (mild logarithmic penalty above S/1000)
+    price_factor = 1.0 if price_midpoint <= 200 else (1.0 - min(0.20, (price_midpoint - 200) / 10000))
+    factor = ADJUSTMENTS.get(biz, {}).get(ticket, 1.0) * ADJUSTMENTS.get(biz, {}).get(difficulty, 1.0) * price_factor
 
     # Adjust conversion percentages
     visit_to_lead = adjust_range(BASE_RANGES["visit_to_lead"], factor)
@@ -71,7 +75,8 @@ def calculate_funnel(data):
             "visits": [int(visits_min), int(visits_max)],
             "leads": [int(leads_min), int(leads_max)],
             "interested": [int(interested_min), int(interested_max)],
-            "sales": [int(sales_min), int(sales_max)]
+            "sales": [int(sales_min), int(sales_max)],
+            "revenue": [int(sales_min * price_midpoint), int(sales_max * price_midpoint)]
         }
     else:  # mode == "sales_goal"
         target_sales = int(data.get("target_sales"))
@@ -101,7 +106,8 @@ def calculate_funnel(data):
             "visits": [int(low_visits), int(high_visits)],
             "leads": [int(low_leads), int(high_leads)],
             "interested": [int(low_interested), int(high_interested)],
-            "sales": [target_sales, target_sales]
+            "sales": [target_sales, target_sales],
+            "revenue": [int(target_sales * price_midpoint), int(target_sales * price_midpoint)]
         }
     return result
 
