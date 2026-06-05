@@ -63,7 +63,7 @@ header {
 }
 
 .header-logo img {
-  height: 48px;
+  height: 40px;
   object-fit: contain;
   display: block;
 }
@@ -108,7 +108,7 @@ header {
     align-items: center;
   }
   .header-logo img {
-    height: 32px;
+    height: 28px;
   }
   .header-actions {
     width: 100%;
