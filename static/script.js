@@ -332,6 +332,21 @@ document.addEventListener('DOMContentLoaded', () => {
           throw new Error('jsPDF no disponible. Recarga la página (Ctrl+Shift+R).');
         }
 
+        // Precargar logo como dataURL para que html2canvas lo vea cargado
+        const logoDataUrl = await new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            try {
+              const c = document.createElement('canvas');
+              c.width = img.naturalWidth; c.height = img.naturalHeight;
+              c.getContext('2d').drawImage(img, 0, 0);
+              resolve(c.toDataURL('image/png'));
+            } catch(e) { resolve(null); }
+          };
+          img.onerror = () => resolve(null);
+          img.src = '/static/logo-violet.png';
+        });
+
         const element = document.getElementById('dashboard-content');
         const canvas = await html2canvas(element, {
           scale: 2,
@@ -352,18 +367,18 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             doc.head.appendChild(fix);
 
-            // Marca de agua: logo centrado con baja opacidad
+            // Marca de agua: logo centrado con baja opacidad (usa dataURL precargado)
             const clonedDash = doc.getElementById('dashboard-content');
-            if (clonedDash) {
+            if (clonedDash && logoDataUrl) {
               clonedDash.style.position = 'relative';
               const wm = doc.createElement('div');
               wm.style.cssText = [
                 'position:absolute', 'top:50%', 'left:50%',
                 'transform:translate(-50%,-50%)',
-                'opacity:0.10', 'pointer-events:none', 'z-index:9999'
+                'opacity:0.12', 'pointer-events:none', 'z-index:9999'
               ].join(';');
               const wmImg = doc.createElement('img');
-              wmImg.src = '/static/logo-violet.png';
+              wmImg.src = logoDataUrl;
               wmImg.style.cssText = 'width:280px;height:auto;display:block;';
               wm.appendChild(wmImg);
               clonedDash.appendChild(wm);
