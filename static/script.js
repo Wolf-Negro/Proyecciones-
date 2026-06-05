@@ -203,6 +203,18 @@ document.addEventListener('DOMContentLoaded', () => {
         kpiLeads.textContent = `${formatNum(data.leads[0])} - ${formatNum(data.leads[1])}`;
         kpiSales.textContent = `${formatNum(data.sales[0])} - ${formatNum(data.sales[1])}`;
 
+        // Company name + date/time bar
+        const companyName = (payload.company_name || '').trim();
+        const companyEl = document.getElementById('results-company-name');
+        const datetimeEl = document.getElementById('results-datetime');
+        if (companyEl) companyEl.textContent = companyName || 'Sin nombre';
+        if (datetimeEl) {
+          const now = new Date();
+          const dateStr = now.toLocaleDateString('es-PE', { day: '2-digit', month: 'long', year: 'numeric' });
+          const timeStr = now.toLocaleTimeString('es-PE', { hour: '2-digit', minute: '2-digit' });
+          datetimeEl.textContent = `${dateStr} · ${timeStr}`;
+        }
+
         // Render Funnel
         renderFunnel(data);
 
@@ -236,6 +248,13 @@ document.addEventListener('DOMContentLoaded', () => {
         // Transition views
         loaderWrapper.style.display = 'none';
         dashboardContent.style.display = 'flex';
+
+        // Auto-scroll to results on mobile (delayed so content renders first)
+        if (window.innerWidth < 900) {
+          setTimeout(() => {
+            dashboardContent.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 300);
+        }
       } else {
         alert('Ocurrió un error en el cálculo: ' + json.error);
         loaderWrapper.style.display = 'none';
@@ -333,6 +352,23 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             doc.head.appendChild(fix);
 
+            // Marca de agua: logo centrado con baja opacidad
+            const clonedDash = doc.getElementById('dashboard-content');
+            if (clonedDash) {
+              clonedDash.style.position = 'relative';
+              const wm = doc.createElement('div');
+              wm.style.cssText = [
+                'position:absolute', 'top:50%', 'left:50%',
+                'transform:translate(-50%,-50%)',
+                'opacity:0.10', 'pointer-events:none', 'z-index:9999'
+              ].join(';');
+              const wmImg = doc.createElement('img');
+              wmImg.src = '/static/logo-violet.png';
+              wmImg.style.cssText = 'width:280px;height:auto;display:block;';
+              wm.appendChild(wmImg);
+              clonedDash.appendChild(wm);
+            }
+
             // html2canvas no procesa CSS filter — invertir la imagen manualmente con canvas
             try {
               const originalIcon = document.querySelector('.results-title-icon');
@@ -373,7 +409,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Contenido centrado con margen
         pdf.addImage(imgData, 'PNG', margin, margin, mmW, mmH);
-        pdf.save('proyeccion-alucinando.pdf');
+
+        const companySlug = (document.getElementById('results-company-name')?.textContent || 'proyeccion')
+          .normalize('NFD').replace(/[̀-ͯ]/g, '')
+          .replace(/[^a-z0-9]+/gi, '-').toLowerCase().replace(/^-|-$/g, '');
+        pdf.save(`proyeccion-${companySlug || 'alucinando'}.pdf`);
 
       } catch (err) {
         console.error('Export error:', err);
